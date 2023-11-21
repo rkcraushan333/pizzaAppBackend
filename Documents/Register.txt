@@ -1,0 +1,36 @@
+Firstly making the registeration api which will help in registering the user for the application.
+In this registeration I have done =>
+-> Validate the request (I have used Joi library)
+-> Authorize the request
+-> Check if user is in the DB already
+=> prepare model
+-> store in db
+-> generate JWT Token
+-> Send response
+
+*** why middle ware can't throw error in async function 
+
+ChatGPT
+Middleware can indeed throw errors in async functions, but there's a caveat when it comes to error handling in async middleware functions in Express.js and similar frameworks. It's important to handle these errors properly to avoid crashing your application.
+
+Here's why middleware errors in async functions can be tricky:
+
+Synchronous Errors: In synchronous middleware functions (non-async), you can throw errors, and Express will catch them and pass them to your error handling middleware. This is straightforward.
+
+Async Errors: In async middleware functions, if you throw an error using throw or reject a promise, Express won't be able to catch these errors by default. They will bypass the standard error handling middleware and might crash your application.
+
+To handle errors in async middleware functions, you have a few options:
+
+=> Use Try-Catch Inside Async Middleware:
+
+I used the middleware to throw the error if there is any validation error in the registration process
+
+
+---> Then after i am checking of existing user and here i am making a custom error handler to check the existing email
+
+Then after if this exists then we will return user already exists otherwise we will add this user by making a
+user in database and will keep the response provided by the db connection
+--> But here i have saved the password after hashing for which i have used bcrypt library which is use to hash
+the password
+Then after getting the result after saving to the db we will give a token that will contain the user info.
+It will be done by jswebtokens (that will contain three things i.e. payload expiry and special key)
